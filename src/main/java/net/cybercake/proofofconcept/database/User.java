@@ -4,6 +4,8 @@ import dev.morphia.annotations.*;
 import dev.morphia.utils.IndexType;
 import org.bukkit.OfflinePlayer;
 
+import java.util.Date;
+
 @Entity(value = "user")
 @Indexes(value = @Index(fields = @Field(value = "uuid", type = IndexType.TEXT)))
 public class User {
@@ -16,5 +18,6 @@ public class User {
 
     @Id @Indexed public String uuid;
     public long kills;
+    public long playtime;
 
 }

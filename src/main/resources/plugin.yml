@@ -1,0 +1,5 @@
+name: ProofOfConcept
+version: 'PROOF-OF-CONCEPT'
+main: net.cybercake.proofofconcept.Main
+api-version: 1.19
+# cyber was here =)

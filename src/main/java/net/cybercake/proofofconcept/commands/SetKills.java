@@ -44,12 +44,7 @@ public class SetKills extends SpigotCommand {
         if(!NumberUtils.isBetweenEquals(argument, 0, 9999)) { // don't want to allow a really high number (not a database limitation -- just cuz)
             sender.sendMessage(UChat.component("&cRequire the integer to be between &b0 - 9999&c!"));
         }
-        Database.execute(player.getUniqueId(), (user) -> {
-            user.kills = argument;
-            UChat.broadcast(user.playtime + "");
-            return user;
-        });
-
+        Database.execute(player.getUniqueId(), (user) -> { user.kills = argument; return user; });
         sender.sendMessage(UChat.component("&aSet your kill count to &e" + argument));
         return true;
     }

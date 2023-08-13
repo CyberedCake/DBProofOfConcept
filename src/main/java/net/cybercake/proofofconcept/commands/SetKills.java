@@ -11,6 +11,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Date;
 import java.util.List;
 
 public class SetKills extends SpigotCommand {
@@ -46,6 +47,10 @@ public class SetKills extends SpigotCommand {
         }
         Database.execute(player.getUniqueId(), (user) -> { user.kills = argument; return user; });
         sender.sendMessage(UChat.component("&aSet your kill count to &e" + argument));
+        Database.execute(player.getUniqueId(), (user) -> {
+            user.firstJoined = new Date();
+            return user;
+        });
         return true;
     }
 

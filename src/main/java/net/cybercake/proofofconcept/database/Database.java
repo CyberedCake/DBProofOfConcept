@@ -12,6 +12,7 @@ import dev.morphia.query.Query;
 import dev.morphia.query.filters.Filters;
 import net.cybercake.proofofconcept.Main;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 import javax.annotation.Nullable;
 import java.net.URLEncoder;
@@ -53,16 +54,43 @@ public class Database {
         datastore.ensureIndexes();
     }
 
+
+    public static void execute(Player player, Executable executable) {
+
+    }
+
+
+
     public static User create(UUID uuid) { // create the user by creating an instance of User then saving it
         User user = new User(Bukkit.getOfflinePlayer(uuid));
         save(user);
         return user;
     }
-    public static Query<User> query(UUID uuid) { return datastore.find(User.class).filter(Filters.eq("uuid", uuid.toString())); }
-    public static void delete(UUID uuid) { query(uuid).delete(); } // remove the user from the database
-    public interface Executable { User run(User user); } // class to handle executable -- used for anon lambdas (quality-of-life feature)
-    public static void save(User user) { datastore.save(user); } // saves the user to the datastore (effectively committing it to the database)
-    public static @Nullable User find(UUID uuid) { return query(uuid).first(); } // returns a user via a provided uuid, provided it exists
-    public static void execute(UUID user, Executable executable) { save(executable.run(find(user) == null ? create(user) : find(user))); } // find a user, allow the user to modify it in executable, and re-commit it to the database (auto save)
+    public static Query<User> query(UUID uuid) {
+        return datastore.find(User.class).filter(Filters.eq("uuid", uuid.toString()));
+    }
+    public static void delete(UUID uuid) {
+        query(uuid).delete();
+    } // remove the user from the database
+
+    public interface Executable {
+        User run(User user);
+    } // class to handle executable -- used for anon lambdas (quality-of-life feature)
+
+    public static void save(User user) {
+        datastore.save(user);
+    } // saves the user to the datastore (effectively committing it to the database)
+
+    public static @Nullable User find(UUID uuid) {
+        return query(uuid).first();
+    } // returns a user via a provided uuid, provided it exists
+
+    public static void execute(UUID user, Executable executable) {
+        save(executable.run(
+                find(user) == null
+                        ? create(user)
+                        : find(user))
+        );
+    } // find a user, allow the user to modify it in executable, and re-commit it to the database (auto save)
 
 }

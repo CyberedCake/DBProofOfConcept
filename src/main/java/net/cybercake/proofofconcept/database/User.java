@@ -4,6 +4,8 @@ import dev.morphia.annotations.*;
 import dev.morphia.utils.IndexType;
 import org.bukkit.OfflinePlayer;
 
+import java.util.Date;
+
 @Entity(value = "user")
 @Indexes(value = @Index(fields = @Field(value = "uuid", type = IndexType.TEXT)))
 public class User {
@@ -12,9 +14,11 @@ public class User {
     public User(OfflinePlayer player) { // when the object is created for the first time
         this.uuid = player.getUniqueId().toString();
         this.kills = 0L; // using a long because why not
+        this.firstJoined = new Date();
     }
 
     @Id @Indexed public String uuid;
     public long kills;
+    public Date firstJoined;
 
 }
